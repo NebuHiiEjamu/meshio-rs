@@ -1,0 +1,11 @@
+[package]
+name = "meshio-mdlx"
+version = "2018.10.28"
+description = "Blizzard MDLX 3D file format importer"
+authors = ["Laphicet Crowe"]
+keywords = ["mdl", "m3", "mdx", "mdlx", "graphics", "3d", "model", "mesh"]
+license = "GPL-3.0"
+
+[dependencies]
+nom = "4.1.1"
+bitflags = "1.0.4"

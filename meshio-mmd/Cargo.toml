@@ -1,0 +1,11 @@
+[package]
+name = "meshio-mmd"
+version = "2018.10.28"
+description = "MikuMikuDance 3D file format importer"
+authors = ["Laphicet Crowe"]
+keywords = ["mmd", "graphics", "3d", "model", "mesh", "pmd", "pmx"]
+license = "GPL-3.0"
+
+[dependencies]
+nom = "4.1.1"
+bitflags = "1.0.4"

@@ -1,0 +1,10 @@
+[package]
+name = "meshio-compileheart"
+version = "2018.10.28"
+description = "Compile Heart (.ism2) 3D file format importer"
+authors = ["Laphicet Crowe"]
+keywords = ["ism2", "graphics", "3d", "model", "mesh"]
+license = "GPL-3.0"
+
+[dependencies]
+nom = "4.1.1"
