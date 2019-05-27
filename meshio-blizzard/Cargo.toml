@@ -1,5 +1,5 @@
 [package]
-name = "meshio-mdlx"
+name = "meshio-blizzard"
 version = "2018.10.28"
 description = "Blizzard MDLX 3D file format importer"
 authors = ["Laphicet Crowe"]
