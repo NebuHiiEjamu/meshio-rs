@@ -1,12 +1,14 @@
 use nom::{
-	be_f32,
-	be_f64,
-	be_u8,
 	do_parse,
-	le_f32,
-	le_f64,
-	le_u8,
-	named
+	named,
+	number::complete::{
+		be_f32,
+		be_f64,
+		be_u8,
+		le_f32,
+		le_f64,
+		le_u8
+	}
 };
 
 /// A color with red, green, blue, and alpha values
@@ -139,7 +141,7 @@ named!(pub be_argb_b<ColorB>,
 );
 
 /// Parses a ['ColorB'] as big endian BGRA
-named!(pub be_bgra_b<ColorB>, le_argb_b)
+named!(pub be_bgra_b<ColorB>,
 	do_parse!(
 		b: be_u8 >>
 		g: be_u8 >>
@@ -181,22 +183,6 @@ named!(pub be_rgb_f<ColorF>,
 			green: g,
 			blue: b,
 			alpha: 1.0,
-		})
-	)
-);
-
-/// Parses a ['ColorF'] as big endian ARGB
-named!(pub le_argb_f<ColorF>,
-	do_parse!(
-		a: be_f32 >>
-		r: be_f32 >>
-		g: be_f32 >>
-		b: be_f32 >>
-		(ColorF {
-			red: r,
-			green: g,
-			blue: b,
-			alpha: a,
 		})
 	)
 );

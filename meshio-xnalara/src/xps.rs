@@ -1,32 +1,28 @@
-extern crate nom;
-extern crate byteorder;
-
-extern crate meshio;
+use cgmath::{
+	Vector2,
+	Vector3,
+	Vector4
+};
 
 use nom::{
 	cond,
 	count,
 	do_parse,
-	le_f32,
-	le_i16,
-	le_u8,
-	le_u16,
-	le_u32,
 	named,
+	number::complete::{
+		le_f32,
+		le_i16,
+		le_u8,
+		le_u16,
+		le_u32
+	},
 	tag,
 	take
 };
 
 use std::str;
 
-use meshio::{
-	ColorB,
-	Vector2f,
-	Vector3f,
-	Vector3u,
-	Vector4f,
-	Vector4h
-};
+use meshio::ColorB;
 
 #[derive(Clone,Debug,Default,PartialEq,Eq)]
 #[repr(u32)]

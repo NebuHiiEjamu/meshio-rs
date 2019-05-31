@@ -1,9 +1,11 @@
 use nom::{
 	count,
 	do_parse,
-	le_f32,
-	le_u16,
 	named,
+	number::complete::{
+		le_f32,
+		le_u16
+	},
 	tag
 };
 

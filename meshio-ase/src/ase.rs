@@ -7,12 +7,11 @@ use cgmath::{
 
 use nom::{
 	alt,
+	character::complete::float,
 	count,
 	delimited,
-	digit,
 	do_parse,
 	flat_map,
-	float,
 	many0,
 	many1,
 	named,

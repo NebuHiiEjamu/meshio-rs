@@ -11,14 +11,16 @@ use cgmath::{
 use nom::{
 	call,
 	do_parse,
-	le_f32,
-	le_i32,
-	le_u8,
-	le_u16,
-	le_u32,
-	le_u64,
 	named,
 	named_args,
+	number::complete::{
+		le_f32,
+		le_i32,
+		le_u8,
+		le_u16,
+		le_u32,
+		le_u64,
+	},
 	switch,
 	value
 };

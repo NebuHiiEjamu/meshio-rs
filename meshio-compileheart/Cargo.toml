@@ -1,10 +1,11 @@
 [package]
 name = "meshio-compileheart"
-version = "2018.10.28"
+version = "2019.5.27"
 description = "Compile Heart (.ism2) 3D file format importer"
 authors = ["Laphicet Crowe"]
-keywords = ["ism2", "graphics", "3d", "model", "mesh"]
+keywords = ["ism2", "graphics", "3d", "model", "mesh", "neptunia"]
 license = "GPL-3.0"
 
 [dependencies]
-nom = "4.1.1"
+cgmath = "0.17.0"
+nom = "5.0.0-beta2"

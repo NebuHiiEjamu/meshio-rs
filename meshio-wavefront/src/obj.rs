@@ -1,11 +1,12 @@
-extern crate nom;
-
-extern crate meshio;
+use cgmath::{
+	Vector3,
+	Vector4
+};
 
 use nom::{
 	alt,
+	character::complete::float,
 	do_parse,
-	float,
 	many0,
 	many1,
 	named,
@@ -15,12 +16,7 @@ use nom::{
 	ws
 };
 
-use meshio::{
-	uint,
-	Vector3,
-	Vector3f,
-	Vector4f
-};
+use meshio::uint;
 
 use super::{
 	id,
@@ -32,10 +28,10 @@ type Face = Vector3<[u32; 3]>;
 struct Group {
 	name: Option<String>,
 	material: Option<String>,
-	vertices: Vec<Vector4f>,
-	normals: Vec<Vector3f>,
-	uvs: Vec<Vector3f>,
-	psvs: Vec<Vector3f>,
+	vertices: Vec<Vector4<f32>>,
+	normals: Vec<Vector3<f32>>,
+	uvs: Vec<Vector3<f32>>,
+	psvs: Vec<Vector3<f32>>,
 	faces: Vec<Face>,
 	lines: Vec<Vec<u32>>,
 	smoothing: u32,
@@ -52,37 +48,28 @@ impl Object {
 	}
 }
 
-named!(v<Vector4f>,
+named!(v<Vector4<f32>>,
 	ws!(do_parse!(
 		tag_no_case!('v') >>
 		x: float >>
 		y: float >>
 		z: float >>
 		w: opt!(float) >>
-		(Vector4f {
-			x: x,
-			y: y,
-			z: z,
-			w: if w.is_none() { 1.0 } else { w.unwrap() },
-		})
+		(Vector4::new(x, y, z, if w.is_none() { 1.0 } else { w.unwrap() }))
 	))
 );
 
-named!(vt<Vector3f>,
+named!(vt<Vector3<f32>>,
 	ws!(do_parse!(
 		tag_no_case!("vt") >>
 		u: float >>
 		v: float >>
 		w: opt!(float) >>
-		(Vector3f {
-			x: u,
-			y: v,
-			z: if w.is_none() { 0.0 } else { w.unwrap() },
-		})
+		(Vector3::new(x, y, if w.is_none() { 0.0 } else { w.unwrap() }))
 	))
 );
 
-named!(vn<Vector3f>,
+named!(vn<Vector3<f32>>,
 	ws!(do_parse!(
 		tag_no_case!("vn") >>
 		v: vector3 >>
@@ -90,17 +77,16 @@ named!(vn<Vector3f>,
 	))
 );
 
-named!(vp<Vector3f>,
+named!(vp<Vector3<f32>>,
 	ws!(do_parse!(
 		tag_no_case!("vp") >>
 		u: float >>
 		v: opt!(float) >>
 		w: opt!(float) >>
-		(Vector3f {
-			x: x,
-			y: if v.is_none() { 1.0 } else { v.unwrap() },
-			z: if w.is_none() { 0.0 } else { w.unwrap() },
-		})
+		(Vector3::new(x,
+			if v.is_none() { 1.0 } else { v.unwrap() },
+			if w.is_none() { 0.0 } else { w.unwrap() }
+		))
 	))
 );
 

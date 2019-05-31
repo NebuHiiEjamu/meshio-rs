@@ -1,23 +1,21 @@
-extern crate nom;
-
 use nom::{
-	digit,
+	character::complete::line_ending,
 	do_parse,
-	line_ending,
 	named,
 	opt,
 	pair,
 	recognize,
 	tag,
-	take_until_and_consume
+	take_until,
 	ws
 };
 
-named!(uint<u32>, recognize!(digit));
-named!(int<i32>, recognize!(pair!(opt!(tag!("-"), digit))));
+use meshio::{
+	int,
+	uint
+};
 
-named!(identifier<&[u8]>,
-	take_until_and_consume!(recognize!(line_ending)));
+named!(identifier<&[u8]>, take_until!(recognize!(line_ending)));
 
 named!(bone<Bone>,
 	do_parse!(

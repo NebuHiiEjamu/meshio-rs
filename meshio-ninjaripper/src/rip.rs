@@ -1,13 +1,10 @@
-extern crate nom;
-extern crate encoding;
-extern crate sha1;
-extern crate regex;
-
 use nom::{
 	do_parse,
-	le_f32,
-	le_u32,
 	named,
+	number::complete::{
+		le_f32,
+		le_u32
+	},
 	tag
 };
 

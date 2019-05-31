@@ -1,12 +1,8 @@
-extern crate meshio;
-
-use meshio::{
-	Vector3f
-};
+use cgmath::Vector3;
 
 #[derive(Clone,Debug,Default,PartialEq,Eq)]
 pub(crate) Facet {
-	pub vertices: [Vector3f; 3],
+	pub vertices: [Vector3<f32>; 3],
 }
 
 #[derive(Clone,Debug,Default,PartialEq,Eq)]

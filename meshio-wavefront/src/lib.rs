@@ -1,29 +1,21 @@
-extern crate nom;
+use cgmath::Vector3;
 
 use nom::{
+	character::complete::not_line_ending,
 	do_parse,
 	map_res,
 	named,
-	not_line_ending,
 	ws
 };
 
 use std::str;
 
-use obj::*;
-
-mod obj;
-
-named!(pub(crate) vector3<Vector3f>,
+named!(pub(crate) vector3<Vector3<f32> >,
 	ws!(do_parse!(
 		x: float >>
 		y: float >>
 		z: float >>
-		(Vector3f {
-			x: x,
-			y: y,
-			z: z,
-		})
+		(Vector3::new(x, y, z))
 	))
 );
 

@@ -1,11 +1,12 @@
-extern crate nom;
-
-extern crate meshio;
+use cgmath::{
+	Vector2,
+	Vector3
+};
 
 use nom::{
 	alt,
+	character::complete::float,
 	do_parse,
-	float,
 	many0,
 	opt,
 	switch,
@@ -14,12 +15,7 @@ use nom::{
 	ws
 };
 
-use meshio::{
-	uint8,
-	Vector2u,
-	Vector3f,
-	Vector3u
-};
+use meshio::uint;
 
 use super::{
 	id,
@@ -50,15 +46,15 @@ enum Reflection {
 #[derive(Clone,Debug,Default,PartialEq,Eq)]
 struct Map {
 	path: String,
-	origin: Option<Vector3u>,
+	origin: Option<Vector3<u32>>,
 	blendu: Option<bool>,
 	blendv: Option<bool>,
 	boost: Option<f32>,
 	mm_base: Option<f32>,
 	mm_gain: Option<f32>,
-	scale: Option<Vector3u>,
-	turbulence: Option<Vector3u>,
-	resolution: Option<Vector2u>,
+	scale: Option<Vector3<u32>>,
+	turbulence: Option<Vector3<u32>>,
+	resolution: Option<Vector2<u32>>,
 	clamp: Option<bool>,
 	bump_multiplier: Option<f32>,
 	channel: Option<Channel>,
@@ -72,7 +68,7 @@ named!(mtllib<&str>,
 	))
 );
 
-named!(ka<Vector3f>,
+named!(ka<Vector3<f32> >,
 	ws!(do_parse!(
 		tag_no_case!("ka") >>
 		val: vector3 >>
@@ -80,7 +76,7 @@ named!(ka<Vector3f>,
 	))
 );
 
-named!(kd<Vector3f>,
+named!(kd<Vector3<f32> >,
 	ws!(do_parse!(
 		tag_no_case!("kd") >>
 		val: vector3 >>
@@ -88,7 +84,7 @@ named!(kd<Vector3f>,
 	))
 );
 
-named!(ks<Vector3f>,
+named!(ks<Vector3<f32> >,
 	ws!(do_parse!(
 		tag_no_case!("ks") >>
 		val: vector3 >>
@@ -128,12 +124,12 @@ named!(illum<u8>,
 	))
 );
 
-named!(uvw0<Vector3u>,
+named!(uvw0<Vector3<u32> >,
 	ws!(do_parse!(
 		x: uint >>
 		y: opt!(uint) >>
 		z: opt!(uint) >>
-		(Vector3u {
+		(Vector3<u32> {
 			x: x,
 			y: if y.is_none() { 0 } else { y },
 			z: if z.is_none() { 0 } else { z },
@@ -141,12 +137,12 @@ named!(uvw0<Vector3u>,
 	))
 );
 
-named!(uvw1<Vector3u>,
+named!(uvw1<Vector3<u32> >,
 	ws!(do_parse!(
 		x: uint >>
 		y: opt!(uint) >>
 		z: opt!(uint) >>
-		(Vector3u {
+		(Vector3<u32> {
 			x: x,
 			y: if y.is_none() { 1 } else { y },
 			z: if z.is_none() { 1 } else { z },
@@ -154,10 +150,12 @@ named!(uvw1<Vector3u>,
 	))
 );
 
-named!(boolean<bool>, alt!(
-	tag_no_case!("off") => { |_| false } |
-	tag_no_case!("on") => { |_| true }
-));
+named!(boolean<bool>,
+	alt!(
+		tag_no_case!("off") => { |_| false } |
+		tag_no_case!("on") => { |_| true }
+	)
+);
 
 named!(map<Map>,
 	ws!(do_parse!(
@@ -203,10 +201,7 @@ named!(map<Map>,
 				x: uint >>
 				tag_no_case!('x') >>
 				y: uint >>
-				(Vector2u {
-					x: x,
-					y: y,
-				})
+				(Vector2::new(x, y))
 			) |
 			do_parse!(
 				tag_no_case!("-clamp") >>

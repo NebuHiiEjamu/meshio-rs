@@ -9,17 +9,19 @@ use nom::{
 	do_parse,
 	Err,
 	IResult,
-	le_f32,
-	le_i16,
-	le_i32,
-	le_u8,
-	le_u16,
-	le_u32,
-	length_bytes,
+	length_data,
 	map,
 	named,
 	named_args,
 	Needed,
+	number::complete::{
+		le_f32,
+		le_i16,
+		le_i32,
+		le_u8,
+		le_u16,
+		le_u32
+	},
 	switch,
 	tag,
 	take,
@@ -37,12 +39,12 @@ use meshio::{
 	BoundsF,
 	ColorF,
 	Language,
-	le_bbf,
+	le_bounds32,
 	le_rgba_f,
 	le_v2f,
 	le_v3f,
 	le_v4f,
-	LocalizedStringMap,
+	LocalizedStringMap
 };
 
 use cgmath::{
@@ -498,8 +500,8 @@ fn index(input: &[u8], size: u8) -> IResult<&[u8],i32> {
 
 fn string<'a>(input: &[u8], encoding: Encoding) -> IResult<&[u8],&'a str> {
 	match encoding {
-		Encoding::UTF16LE => map!(input, length_bytes!(le_u32), |s| UTF_16LE_ENCODING.decode(s, DecoderTrap::Replace)),
-		Encoding::UTF8 => map!(input, length_bytes!(le_u32), |s| std:str::from_utf8(s).unwrap_or_default()),
+		Encoding::UTF16LE => map!(input, length_data!(le_u32), |s| UTF_16LE_ENCODING.decode(s, DecoderTrap::Replace)),
+		Encoding::UTF8 => map!(input, length_data!(le_u32), |s| std:str::from_utf8(s).unwrap_or_default()),
 	}
 }
 
@@ -553,16 +555,6 @@ named!(header<Header>,
 	)
 );
 
-named!(vector4<Vector4<f32> >,
-	do_parse!(
-		x: le_f32 >>
-		y: le_f32 >>
-		z: le_f32 >>
-		w: le_f32 >>
-		(Vector4::new(x, y, z, w))
-	)
-);
-
 named_args!(bdef1(input: &[u8], index_size: u8)<Skinning>,
 	do_parse!(
 		index: call!(index, index_size) >>
@@ -574,7 +566,7 @@ named_args!(bdef1(input: &[u8], index_size: u8)<Skinning>,
 
 named_args!(bdef2(input: &[u8], index_size: u8)<Skinning>,
 	do_parse!(
-		indices: count_fixed!(&[u32], call!(index, index_size), 2) >>
+		indices: count!(call!(index, index_size), 2) >>
 		weight: le_f32 >>
 		(Skinning::BDef2 {
 			indices: indices,
@@ -738,7 +730,7 @@ named_args!(link(input: &[u8], index_size: u8)<Link>,
 		bone_index: call!(index, index_size) >>
 		has_limits: le_u8 >>
 		limit_count: le_u32 >>
-		limits: count!(le_bbf, limit_count) >>
+		limits: count!(le_bounds32, limit_count) >>
 		(Link {
 			bone_index: bone_index,
 			has_limits: has_limits as bool,

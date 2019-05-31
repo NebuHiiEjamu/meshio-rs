@@ -1,0 +1,12 @@
+[package]
+name = "meshio-ninjaripper"
+version = "2019.5.27"
+description = "Ninja Ripper (.rip) file format importer"
+authors = ["Laphicet Crowe"]
+keywords = ["graphics", "3d", "model", "mesh"]
+license = "GPL-3.0"
+
+[dependencies]
+nom = "5.0.0-beta2"
+regex = "1.1.6"
+sha1 = "0.6.0"

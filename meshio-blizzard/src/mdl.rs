@@ -6,10 +6,10 @@ use mdlx1::*;
 
 use nom::{
 	alt,
+	character::complete::float,
 	count,
 	delimited,
 	do_parse,
-	float,
 	many0,
 	many1,
 	named,

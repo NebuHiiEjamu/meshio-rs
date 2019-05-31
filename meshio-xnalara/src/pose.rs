@@ -1,21 +1,21 @@
-extern crate nom;
+use cgmath::Vector3;
 
 use nom::{
 	do_parse,
 	named,
-	take_until_and_consume,
+	take_until,
 	ws
 };
 
 #[derive(Clone,Debug,Default,PartialEq,Eq)]
 pub(crate) struct Pose {
 	pub name: String,
-	pub rotation: Vector3,
-	pub coord: Vector3,
-	pub scale: Vector3,
+	pub rotation: Vector3<f32>,
+	pub coord: Vector3<f32>,
+	pub scale: Vector3<f32>,
 }
 
-named!(identifier<&[u8]>, take_until_and_consume!(":"));
+named!(identifier<&[u8]>, take_until!(":"));
 
 named!(pub(crate) pose<Pose>,
 	ws!(do_parse!(

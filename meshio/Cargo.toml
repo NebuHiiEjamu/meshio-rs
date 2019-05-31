@@ -1,0 +1,11 @@
+[package]
+name = "meshio"
+version = "2019.5.27"
+description = "Core crate for MeshIO format interoperability"
+authors = ["Laphicet Crowe"]
+keywords = ["graphics", "3d", "model", "mesh"]
+license = "GPL-3.0"
+
+[dependencies]
+cgmath = "0.17.0"
+nom = "5.0.0-beta2"
